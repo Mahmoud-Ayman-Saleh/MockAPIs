@@ -1,0 +1,31 @@
+# Build artifacts
+**/bin/
+**/obj/
+
+# User-specific files
+*.user
+*.rsuser
+*.suo
+
+# Visual Studio / VS Code settings
+.vs/
+.vscode/
+
+# Logs
+*.log
+
+# Test output
+TestResults/
+*.trx
+
+# NuGet packages (when using local packages folder)
+packages/
+
+# Rider / ReSharper
+.idea/
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# OS files
+.DS_Store
+Thumbs.db
