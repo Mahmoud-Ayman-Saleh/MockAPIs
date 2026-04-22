@@ -16,4 +16,5 @@ namespace MockAPIs.DAL.Models
         public string? FakerHint { get; set; }
         public bool IsRequired { get; set; }
     }
+    
 }

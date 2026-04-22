@@ -27,7 +27,7 @@ namespace MockAPIs.DAL.Data
             // 1- project -> User relationship
             builder.Entity<Project>()
                 .HasOne(p => p.User)
-                .WithMany()
+                .WithMany(u => u.Projects)
                 .HasForeignKey(p => p.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
             
