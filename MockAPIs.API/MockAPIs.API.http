@@ -1,6 +1,50 @@
-@MockAPIs.API_HostAddress = http://localhost:5167
+@host = http://localhost:5050
 
-GET {{MockAPIs.API_HostAddress}}/weatherforecast/
-Accept: application/json
+### ─── Register ────────────────────────────────────────
+POST {{host}}/api/auth/Register
+Content-Type: application/json
 
-###
+{
+  "fullName": "Test User",
+  "userName": "testuser",
+  "email": "testuser@example.com",
+  "password": "Test@1234"
+}
+
+### ─── Login ───────────────────────────────────────────
+POST {{host}}/api/auth/Login
+Content-Type: application/json
+
+{
+  "userName": "testuser",
+  "password": "Test@1234"
+}
+
+### ─── Refresh Token ───────────────────────────────────
+# Paste the refreshToken value from the Login/Register response
+POST {{host}}/api/auth/RefreshToken
+Content-Type: application/json
+
+{
+  "refreshToken": "<paste-refresh-token-here>"
+}
+
+### ─── Login with wrong password (expect 401) ─────────
+POST {{host}}/api/auth/Login
+Content-Type: application/json
+
+{
+  "userName": "testuser",
+  "password": "WrongPassword1!"
+}
+
+### ─── Register duplicate email (expect 400) ──────────
+POST {{host}}/api/auth/Register
+Content-Type: application/json
+
+{
+  "fullName": "Test User",
+  "userName": "testuser2",
+  "email": "testuser@example.com",
+  "password": "Test@1234"
+}

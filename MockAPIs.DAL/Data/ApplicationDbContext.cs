@@ -19,6 +19,7 @@ namespace MockAPIs.DAL.Data
         public DbSet<Field> Fields { get; set; }
         public DbSet<MockRecord> MockRecords { get; set; }
         public DbSet<EndpointConfig> EndpointConfigs { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -85,6 +86,17 @@ namespace MockAPIs.DAL.Data
             builder.Entity<EndpointConfig>()
             .HasIndex(e => e.ResourceId)
             .IsUnique();
+
+            // RefreshToken -> AppUser relationship
+            builder.Entity<RefreshToken>()
+                .HasOne(rt => rt.User)
+                .WithMany(u => u.RefreshTokens)
+                .HasForeignKey(rt => rt.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<RefreshToken>()
+                .HasIndex(rt => rt.Token)
+                .IsUnique();
         }
     }
 }
