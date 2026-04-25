@@ -8,9 +8,6 @@ namespace MockAPIs.BLL.DTOs
 {
     public class RegisterDTO
     {
-        [Required]
-        public string? FullName { get; set; }
-
         [Required]  
         public string? UserName { get; set; }
 

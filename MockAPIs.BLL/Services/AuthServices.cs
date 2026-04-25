@@ -47,7 +47,6 @@ namespace MockAPIs.BLL.Services
             // 2. Create the AppUser entity
             var user = new AppUser
             {
-                FullName = dto.FullName!,
                 UserName = dto.UserName,
                 Email = dto.Email,
             };
@@ -129,7 +128,7 @@ namespace MockAPIs.BLL.Services
                 {
                     UserId = user.Id,
                     Email = user.Email ?? string.Empty,
-                    FullName = user.FullName,
+                    UserName = user.UserName ?? string.Empty,
                     Role = roles.FirstOrDefault() ?? "User",
                     CreatedAt = user.CreatedAt,
                 }
@@ -146,7 +145,6 @@ namespace MockAPIs.BLL.Services
                 new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new(JwtRegisteredClaimNames.Email, user.Email ?? ""),
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new("fullName", user.FullName),
             };
 
             // Add role claims

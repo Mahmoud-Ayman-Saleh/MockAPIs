@@ -5,7 +5,6 @@ POST {{host}}/api/auth/Register
 Content-Type: application/json
 
 {
-  "fullName": "Test User",
   "userName": "testuser",
   "email": "testuser@example.com",
   "password": "Test@1234"
@@ -43,7 +42,6 @@ POST {{host}}/api/auth/Register
 Content-Type: application/json
 
 {
-  "fullName": "Test User",
   "userName": "testuser2",
   "email": "testuser@example.com",
   "password": "Test@1234"

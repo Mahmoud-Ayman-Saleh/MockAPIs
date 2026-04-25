@@ -9,7 +9,6 @@ namespace MockAPIs.DAL.Models
 {
     public class AppUser : IdentityUser<Guid>
     {
-        public string FullName { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public UserPlan Plan { get; set; } = UserPlan.Free;
         public ICollection<Project> Projects { get; set; } = new List<Project>();
