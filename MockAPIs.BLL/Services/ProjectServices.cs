@@ -44,7 +44,7 @@ namespace MockAPIs.BLL.Services
         }
 
 
-        public async Task<bool> DeleteProjectAsync(Guid projectId, Guid userId)
+        public async Task<bool> Delete(Guid projectId, Guid userId)
         {
             var project = await repository.GetById(projectId);
 

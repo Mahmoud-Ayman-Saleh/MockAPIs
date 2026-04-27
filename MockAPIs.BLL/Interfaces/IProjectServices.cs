@@ -13,6 +13,6 @@ namespace MockAPIs.BLL.Interfaces
         Task<ProjectDetailsDto> GetById(Guid projectId, Guid userId);
         Task<ProjectRenamedDto> Rename(Guid projectId, string newName, Guid userId);
         Task<ProjectCreatedDto> Create(string name, Guid userId);
-        Task<bool> DeleteProjectAsync(Guid projectId, Guid userId);
+        Task<bool> Delete(Guid projectId, Guid userId);
     }
 }

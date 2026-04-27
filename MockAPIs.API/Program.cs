@@ -5,7 +5,9 @@ using Microsoft.IdentityModel.Tokens;
 using MockAPIs.BLL.Interfaces;
 using MockAPIs.BLL.Services;
 using MockAPIs.DAL.Data;
+using MockAPIs.DAL.Interfaces;
 using MockAPIs.DAL.Models;
+using MockAPIs.DAL.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,6 +61,8 @@ builder.Services.AddAuthentication(op =>
 
 // ─── DI: Application Services ────────────────────────────────
 builder.Services.AddScoped<IAuthServices, AuthService>();
+builder.Services.AddScoped<IProjectServices, ProjectServices>();
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 
 var app = builder.Build();
 
