@@ -23,10 +23,8 @@ namespace MockAPIs.DAL.Repositories
             return entity;
         }
 
-        public async Task Delete(Guid id)
+        public async Task Delete(T entity)
         {
-            var entity = await dbSet.FindAsync(id);
-
             if (entity != null) dbSet.Remove(entity);
         }
 

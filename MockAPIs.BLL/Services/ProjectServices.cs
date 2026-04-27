@@ -50,7 +50,7 @@ namespace MockAPIs.BLL.Services
 
             if (project == null || project.UserId != userId) return false;
 
-            await unitOfWork.Projects.Delete(projectId);
+            await unitOfWork.Projects.Delete(project);
             await unitOfWork.Projects.SaveChanges();
 
             return true;
