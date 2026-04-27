@@ -23,14 +23,14 @@ namespace MockAPIs.DAL.Repositories
             return entity;
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(Guid id)
         {
             var entity = await dbSet.FindAsync(id);
 
             if (entity != null) dbSet.Remove(entity);
         }
 
-        public async Task<bool> Exist(int id)
+        public async Task<bool> Exist(Guid id)
         {
             return await dbSet.FindAsync(id) != null;
         }
@@ -40,9 +40,14 @@ namespace MockAPIs.DAL.Repositories
             return await dbSet.ToListAsync();
         }
 
-        public async Task<T?> GetById(int id)
+        public async Task<T?> GetById(Guid id)
         {
             return await dbSet.FindAsync(id);
+        }
+
+        public async Task SaveChanges()
+        {
+            await context.SaveChangesAsync();
         }
 
         public Task Update(T entity)

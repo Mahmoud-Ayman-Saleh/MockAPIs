@@ -8,6 +8,10 @@ namespace MockAPIs.DAL.Interfaces
 {
     public interface IProjectRepository
     {
-        
+        Task<List<Project>> GetAllByUserId(Guid userId);
+        Task<Project?> GetById(Guid id);
+        Task<Project?> GetByIdWithResources(Guid id);
+        Task<bool> IsTokenUnique(string token);
+        Task<bool> IsSlugUnique(string slug);
     }
 }

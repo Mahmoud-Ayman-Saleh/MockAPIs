@@ -7,11 +7,12 @@ namespace MockAPIs.DAL.Interfaces
 {
     public interface IGenericRepository<T> where T : class
     {
-        Task<T?> GetById(int id);
+        Task<T?> GetById(Guid id);
         Task<IEnumerable<T>> GetAll();
         Task Update(T entity);
         Task<T> Add(T entity);
-        Task Delete(int id);
-        Task<bool> Exist(int id);
+        Task Delete(Guid id);
+        Task<bool> Exist(Guid id);
+        Task SaveChanges();
     }
 }
