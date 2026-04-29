@@ -1,4 +1,8 @@
 @host = http://localhost:5050
+# Paste the accessToken from a Login/Register response
+@token = <paste-access-token-here>
+# Paste a valid project GUID after creating one
+@projectId = <paste-project-id-here>
 
 ### ─── Register ────────────────────────────────────────
 POST {{host}}/api/auth/Register
@@ -46,3 +50,47 @@ Content-Type: application/json
   "email": "testuser@example.com",
   "password": "Test@1234"
 }
+
+
+
+### ══════════════════════════════════════════════════════
+###   PROJECT ENDPOINTS
+### ══════════════════════════════════════════════════════
+
+### ─── Create Project ────────────────────────────────────
+POST {{host}}/api/project
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+"My First Project"
+
+### ─── Get All Projects ──────────────────────────────────
+GET {{host}}/api/project
+Authorization: Bearer {{token}}
+
+### ─── Get Project By ID ─────────────────────────────────
+# Replace @projectId at the top with a real GUID from Create / Get All
+GET {{host}}/api/project/{{projectId}}
+Authorization: Bearer {{token}}
+
+### ─── Rename Project ────────────────────────────────────
+PUT {{host}}/api/project/{{projectId}}/rename
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+"Renamed Project"
+
+### ─── Delete Project ────────────────────────────────────
+DELETE {{host}}/api/project/{{projectId}}
+Authorization: Bearer {{token}}
+
+### ─── Get All Projects (no token, expect 401) ───────────
+GET {{host}}/api/project
+
+### ─── Get Project by non-existent ID (expect 404) ───────
+GET {{host}}/api/project/00000000-0000-0000-0000-000000000000
+Authorization: Bearer {{token}}
+
+### ─── Delete non-existent Project (expect 404) ──────────
+DELETE {{host}}/api/project/00000000-0000-0000-0000-000000000000
+Authorization: Bearer {{token}}
