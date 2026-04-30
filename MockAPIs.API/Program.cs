@@ -63,6 +63,9 @@ builder.Services.AddAuthentication(op =>
 builder.Services.AddScoped<IAuthServices, AuthService>();
 builder.Services.AddScoped<IProjectServices, ProjectServices>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<IResourceRepository, ResourceRepository>();
+builder.Services.AddScoped<IResourceServices, ResourceService>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 

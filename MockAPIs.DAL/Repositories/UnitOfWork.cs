@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using MockAPIs.DAL.Data;
 using MockAPIs.DAL.Interfaces;
 using MockAPIs.DAL.Models;
 
@@ -12,7 +13,7 @@ namespace MockAPIs.DAL.Repositories
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly DbContext context;
+        private readonly ApplicationDbContext context;
         private IDbContextTransaction? transaction;
         private IGenericRepository<AppUser> users;
         private IGenericRepository<Resource> resources;
@@ -21,7 +22,7 @@ namespace MockAPIs.DAL.Repositories
         private IGenericRepository<MockRecord> mockRecords;
         private IGenericRepository<EndpointConfig> endpointsConfig;
 
-        public UnitOfWork(DbContext _context)
+        public UnitOfWork(ApplicationDbContext _context)
         {
             context = _context;
         }

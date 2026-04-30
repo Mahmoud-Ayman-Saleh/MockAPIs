@@ -8,7 +8,7 @@ namespace MockAPIs.BLL.Interfaces
 {
     public interface IResourceServices
     {
-        Task<ResourceCreated> Created(string name, Guid projectId);
-        Task Delete(Guid resourceId, Guid projectId);
+        Task<ResourceCreatedDto> Create(string name, Guid projectId, Guid userId);
+        Task Delete(Guid resourceId, Guid userId);
     }
 }

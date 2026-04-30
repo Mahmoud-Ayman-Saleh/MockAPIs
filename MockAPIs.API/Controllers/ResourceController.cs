@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using MockAPIs.BLL.Interfaces;
 
 namespace MockAPIs.API.Controllers
 {
@@ -11,17 +13,25 @@ namespace MockAPIs.API.Controllers
     [Route("api/[controller]")]
     public class ResourceController : ControllerBase
     {
-        private readonly IResourceService resourceService;
-        public ResourceController(IResourceService _resourceService)
+        private readonly IResourceServices resourceService;
+        public ResourceController(IResourceServices _resourceService)
         {
             resourceService = _resourceService;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] string name, [FromBody] Guid projectId)
+        public async Task<IActionResult> Create([FromBody] Guid projectId, string name)
         {
-            var resource = resourceService.Create(name, projectId);
-            return CreatedAtAction();
+            var userId = GetCurrentUserId();
+            var resource = await resourceService.Create(name, projectId, userId);
+            return StatusCode(201, resource);
+        }
+
+
+        private Guid GetCurrentUserId()
+        {
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return Guid.Parse(userIdStr!);
         }
         
     }

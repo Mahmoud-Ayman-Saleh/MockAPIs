@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using MockAPIs.DAL.Data;
 using MockAPIs.DAL.Interfaces;
 
 namespace MockAPIs.DAL.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        private readonly DbContext context;
+        private readonly ApplicationDbContext context;
         private readonly DbSet<T> dbSet;
 
-        public GenericRepository(DbContext _context)
+        public GenericRepository(ApplicationDbContext _context)
         {
             context = _context;
             dbSet = _context.Set<T>();

@@ -6,7 +6,7 @@ using MockAPIs.DAL.Models;
 
 namespace MockAPIs.BLL.DTOs
 {
-    public class ResourceCreated
+    public class ResourceCreatedDto
     {
         public Guid Id { get; set; }
         public string? Name { get; set; }
@@ -14,9 +14,9 @@ namespace MockAPIs.BLL.DTOs
         public int Count { get; set; }
         public EndpointConfigDto EndpointConfig { get; set; }
 
-        public static ResourceCreated FromEntity(Resource resource)
+        public static ResourceCreatedDto FromEntity(Resource resource)
         {
-            return new ResourceCreated
+            return new ResourceCreatedDto
             {
                 Id = resource.Id,
                 Name = resource.Name,
