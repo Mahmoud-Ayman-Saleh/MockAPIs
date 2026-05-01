@@ -19,11 +19,11 @@ namespace MockAPIs.API.Controllers
             resourceService = _resourceService;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Guid projectId, string name)
+        [HttpPost("{id:guid}")]
+        public async Task<IActionResult> Create(Guid id, [FromBody]string name)
         {
             var userId = GetCurrentUserId();
-            var resource = await resourceService.Create(name, projectId, userId);
+            var resource = await resourceService.Create(name, id, userId);
             return StatusCode(201, resource);
         }
 

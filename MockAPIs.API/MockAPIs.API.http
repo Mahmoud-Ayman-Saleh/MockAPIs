@@ -107,10 +107,8 @@ Authorization: Bearer {{token}}
 ### ══════════════════════════════════════════════════════
 
 ### ─── Create Resource (expect 201) ─────────────────────
-# Body is the projectId as a raw JSON Guid string.
-# The resource name is passed as a query parameter.
-POST {{host}}/api/resource?name=users
+POST {{host}}/api/resource/1
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
-"{{projectId}}"
+"New Resource"
