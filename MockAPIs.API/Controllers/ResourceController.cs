@@ -27,6 +27,17 @@ namespace MockAPIs.API.Controllers
             return StatusCode(201, resource);
         }
 
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var userId = GetCurrentUserId();
+            var deleted = await resourceService.Delete(id, userId);
+            if (!deleted)
+                return NotFound(new { message = "Resource not found" });
+
+            return Ok(new { message = "Resource deleted successfully" });
+        }
+
 
         private Guid GetCurrentUserId()
         {

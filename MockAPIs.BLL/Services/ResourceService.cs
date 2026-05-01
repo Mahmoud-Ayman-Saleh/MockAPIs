@@ -70,9 +70,13 @@ namespace MockAPIs.BLL.Services
 
         }
 
-        public Task Delete(Guid resourceId, Guid projectId)
+        public async Task<bool> Delete(Guid resourceId, Guid projectId)
         {
-            throw new NotImplementedException();
+            var resource = await unitOfWork.Resources.GetById(resourceId);
+            if (resource == null || resource.ProjectId != projectId) return false;
+            await unitOfWork.Resources.Delete(resource);
+            await unitOfWork.Resources.SaveChanges();
+            return true;
         }
 
 
