@@ -30,10 +30,10 @@ namespace MockAPIs.API.Controllers
         }
 
         [HttpGet("{id:guid}")]
-        public async Task<IActionResult> GetById(Guid projectId)
+        public async Task<IActionResult> GetById(Guid id)
         {
             var userId = GetCurrentUserId();
-            var project = await projectServices.GetById(projectId, userId);
+            var project = await projectServices.GetById(id, userId);
 
             if (project == null) return NotFound(new { message = "Project not found" });
 

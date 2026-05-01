@@ -1,8 +1,14 @@
-@host = http://localhost:5050
+@host = http://localhost:5167
 # Paste the accessToken from a Login/Register response
-@token = <paste-access-token-here>
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMTlkZGY4Zi00NTQ1LTc4ZTktYTZlYS0xYzgyMjU5Yjg1ZDAiLCJlbWFpbCI6InRlc3R1c2VyQGV4YW1wbGUuY29tIiwianRpIjoiNzI3ODBjN2UtNDZlMS00MWVmLThjNTAtNzIwYWE5MDhkYTJjIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiVXNlciIsImV4cCI6MTc3NzY0ODQ4MiwiaXNzIjoiTW9ja0FQSXMiLCJhdWQiOiJNb2NrQVBJcyJ9.3FoeciWmQZodcjJuZx8jsWHOwhh9uwknYJJTT88HL6k
 # Paste a valid project GUID after creating one
-@projectId = <paste-project-id-here>
+@projectId = 32f00875-54bf-41e5-9ea0-4edcd6e114fa
+# Paste a valid refresh token from a Login/Register response
+@refreshToken = p415Fy/8UAUmYZOCgZ+FKE5WUfMjTtWUqqUrpMKcgjZug16HCjNVwT2Bx06zD4c6dCFRw5WPKCSKbwOa20spbw==
+
+### ══════════════════════════════════════════════════════
+###   AUTH ENDPOINTS
+### ══════════════════════════════════════════════════════
 
 ### ─── Register ────────────────────────────────────────
 POST {{host}}/api/auth/Register
@@ -24,12 +30,11 @@ Content-Type: application/json
 }
 
 ### ─── Refresh Token ───────────────────────────────────
-# Paste the refreshToken value from the Login/Register response
 POST {{host}}/api/auth/RefreshToken
 Content-Type: application/json
 
 {
-  "refreshToken": "<paste-refresh-token-here>"
+  "refreshToken": "{{refreshToken}}"
 }
 
 ### ─── Login with wrong password (expect 401) ─────────
@@ -57,35 +62,31 @@ Content-Type: application/json
 ###   PROJECT ENDPOINTS
 ### ══════════════════════════════════════════════════════
 
-### ─── Create Project ────────────────────────────────────
+### ─── Get All Projects (no token, expect 401) ───────────
+GET {{host}}/api/project
+
+### ─── Create Project (expect 201) ──────────────────────
 POST {{host}}/api/project
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
-"My First Project"
+"My Second Project"
 
-### ─── Get All Projects ──────────────────────────────────
+### ─── Get All Projects (expect 200) ────────────────────
 GET {{host}}/api/project
 Authorization: Bearer {{token}}
 
-### ─── Get Project By ID ─────────────────────────────────
+### ─── Get Project By ID (expect 200) ───────────────────
 # Replace @projectId at the top with a real GUID from Create / Get All
 GET {{host}}/api/project/{{projectId}}
 Authorization: Bearer {{token}}
 
-### ─── Rename Project ────────────────────────────────────
+### ─── Rename Project (expect 200) ──────────────────────
 PUT {{host}}/api/project/{{projectId}}/rename
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 "Renamed Project"
-
-### ─── Delete Project ────────────────────────────────────
-DELETE {{host}}/api/project/{{projectId}}
-Authorization: Bearer {{token}}
-
-### ─── Get All Projects (no token, expect 401) ───────────
-GET {{host}}/api/project
 
 ### ─── Get Project by non-existent ID (expect 404) ───────
 GET {{host}}/api/project/00000000-0000-0000-0000-000000000000
@@ -94,3 +95,22 @@ Authorization: Bearer {{token}}
 ### ─── Delete non-existent Project (expect 404) ──────────
 DELETE {{host}}/api/project/00000000-0000-0000-0000-000000000000
 Authorization: Bearer {{token}}
+
+### ─── Delete Project (expect 200) ──────────────────────
+DELETE {{host}}/api/project/{{projectId}}
+Authorization: Bearer {{token}}
+
+
+
+### ══════════════════════════════════════════════════════
+###   RESOURCE ENDPOINTS
+### ══════════════════════════════════════════════════════
+
+### ─── Create Resource (expect 201) ─────────────────────
+# Body is the projectId as a raw JSON Guid string.
+# The resource name is passed as a query parameter.
+POST {{host}}/api/resource?name=users
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+"{{projectId}}"
