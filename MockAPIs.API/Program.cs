@@ -68,6 +68,8 @@ builder.Services.AddScoped<IResourceServices, ResourceService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IFieldRepository, FieldRepository>();
 builder.Services.AddScoped<IFieldService, FieldService>();
+builder.Services.AddScoped<IEndpointConfigRepository, EndpointConfigRepository>();
+builder.Services.AddScoped<IEndpointConfigService, EndpointConfigService>();
 
 var app = builder.Build();
 
