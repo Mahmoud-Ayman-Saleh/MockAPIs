@@ -29,10 +29,10 @@ namespace MockAPIs.BLL.Services
         public async Task<ResourceCreatedDto> Create(string name, Guid projectId, Guid userId)
         {
             if (string.IsNullOrWhiteSpace(name)) throw new ValidationException("Resource name is required");
-            var project = await projectRepository.GetById(projectId);
-            if (project == null) throw new InvalidOperationException("Project not found");
 
-            if (project.UserId != userId) throw new UnauthorizedAccessException("Access denied"); 
+            var projectExists = await resourceRepository.IsOwnedByUserAsync(projectId, userId);
+            if (!projectExists) throw new InvalidOperationException("Project not found");
+
 
             var slug = GenerateSlug(name);
             var finalSlug = await EnsureUniqueSlugInProjectAsync(projectId, slug);

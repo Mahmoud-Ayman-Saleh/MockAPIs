@@ -22,5 +22,11 @@ namespace MockAPIs.DAL.Repositories
             return !await context.Resources.AnyAsync(r => r.ProjectId == projectId && r.Slug == slug);
         }
 
+        public async Task<bool> IsOwnedByUserAsync(Guid projectId, Guid userId)
+        {
+            return await context.Projects
+                .AnyAsync(p => p.Id == projectId && p.UserId == userId);
+        }
+
     }
 }
