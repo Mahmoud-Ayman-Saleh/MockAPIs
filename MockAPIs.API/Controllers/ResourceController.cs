@@ -4,6 +4,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MockAPIs.BLL.Interfaces;
 
@@ -11,6 +12,7 @@ namespace MockAPIs.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class ResourceController : ControllerBase
     {
         private readonly IResourceServices resourceService;
