@@ -8,7 +8,7 @@ namespace MockAPIs.DAL.Interfaces
 {
     public interface IEndpointConfigRepository
     {
-        Task<EndpointConfig?> GetByResourceIdAsync(Guid resourceId);
-        Task<bool> IsResourceOwnedByUserAsync(Guid resourceId, Guid userId);
+        Task<EndpointConfig?> GetByResourceId(Guid resourceId);
+        Task<bool> IsResourceOwnedByUser(Guid resourceId, Guid userId);
     }
 }
