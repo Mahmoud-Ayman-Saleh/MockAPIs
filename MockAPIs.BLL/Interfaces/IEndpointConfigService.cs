@@ -8,7 +8,7 @@ namespace MockAPIs.BLL.Interfaces
 {
     public interface IEndpointConfigService
     {
-        Task<EndpointConfigResponseDto> UpdateEndpointConfigAsync(Guid resourceId,
+        Task<EndpointConfigResponseDto> Update(Guid resourceId,
             UpdateEndpointConfigDto dto, Guid userId);
     }
 }
