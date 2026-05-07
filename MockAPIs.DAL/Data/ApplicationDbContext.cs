@@ -9,7 +9,7 @@ using MockAPIs.DAL.Models;
 
 namespace MockAPIs.DAL.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
+    public class  ApplicationDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
