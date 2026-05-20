@@ -8,6 +8,7 @@ using MockAPIs.DAL.Data;
 using MockAPIs.DAL.Interfaces;
 using MockAPIs.DAL.Models;
 using MockAPIs.DAL.Repositories;
+using MockAPIs.DAL.Repositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -70,6 +71,8 @@ builder.Services.AddScoped<IFieldRepository, FieldRepository>();
 builder.Services.AddScoped<IFieldService, FieldService>();
 builder.Services.AddScoped<IEndpointConfigRepository, EndpointConfigRepository>();
 builder.Services.AddScoped<IEndpointConfigService, EndpointConfigService>();
+builder.Services.AddScoped<IDataRepository, DataRepository>();
+builder.Services.AddScoped<IDataService, DataService>();
 
 var app = builder.Build();
 
