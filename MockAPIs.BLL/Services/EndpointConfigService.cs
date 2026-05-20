@@ -25,12 +25,12 @@ namespace MockAPIs.BLL.Services
             Guid userId)
         {
             var resourceOwned = await endpointConfigRepository
-                .IsResourceOwnedByUserAsync(resourceId, userId);
+                .IsResourceOwnedByUser(resourceId, userId);
 
             if (!resourceOwned)
                 throw new KeyNotFoundException("Resource not found");
 
-            var config = await endpointConfigRepository.GetByResourceIdAsync(resourceId);
+            var config = await endpointConfigRepository.GetByResourceId(resourceId);
 
             if (config == null)
                 throw new KeyNotFoundException("Endpoint config not found");

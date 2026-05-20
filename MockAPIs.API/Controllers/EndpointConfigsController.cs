@@ -31,7 +31,7 @@ namespace MockAPIs.API.Controllers
             var userId = GetCurrentUserId();
 
             var config = await _endpointConfigService
-                .UpdateEndpointConfigAsync(resourceId, dto, userId);
+                .Update(resourceId, dto, userId);
 
             return Ok(config);
         }
