@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using MockAPIs.API.Middleware;
 using MockAPIs.BLL.Interfaces;
 using MockAPIs.BLL.Services;
 using MockAPIs.DAL.Data;
@@ -101,6 +102,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ExceptionMiddleware>();
+
 
 app.UseAuthentication();
 app.UseAuthorization();
