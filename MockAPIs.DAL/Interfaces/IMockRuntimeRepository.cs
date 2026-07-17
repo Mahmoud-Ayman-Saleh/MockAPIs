@@ -11,6 +11,7 @@ namespace MockAPIs.DAL.Interfaces
         Task<Project?> GetProjectByToken(string token);
         Task<Resource?> GetResourceWithConfig(Guid projectId, string resourceSlug);
         Task<List<MockRecord>> GetAllRecords(Guid resourceId);
+        Task<(List<MockRecord> Records, int TotalCount)> GetPagedRecordsAsync(Guid resourceId, int page, int pageSize);
         Task<MockRecord?> GetRecordById(Guid resourceId, Guid recordId);
         Task AddRecord(MockRecord record);
         Task UpdateRecord(MockRecord record);

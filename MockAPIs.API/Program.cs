@@ -74,6 +74,8 @@ builder.Services.AddScoped<IEndpointConfigRepository, EndpointConfigRepository>(
 builder.Services.AddScoped<IEndpointConfigService, EndpointConfigService>();
 builder.Services.AddScoped<IDataRepository, DataRepository>();
 builder.Services.AddScoped<IDataService, DataService>();
+builder.Services.AddScoped<IMockRuntimeRepository, MockRuntimeRepository>();
+builder.Services.AddScoped<IMockRuntimeService, MockRuntimeService>();
 
 var app = builder.Build();
 

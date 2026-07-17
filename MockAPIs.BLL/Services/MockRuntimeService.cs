@@ -30,6 +30,29 @@ namespace MockAPIs.BLL.Services
             if (!resource.EndpointConfig.GetList)
                 throw new MethodNotAllowedException("GET list method is not enabled for this resource");
 
+            // Check if we can do fast DB-level pagination (no search text)
+            if (resource.EndpointConfig.EnablePagination && page.HasValue && string.IsNullOrWhiteSpace(search))
+            {
+                var pageNum = page.Value < 1 ? 1 : page.Value;
+                var pageSize = limit ?? 10;
+                
+                var (pagedRecords, totalCount) = await runtimeRepository.GetPagedRecordsAsync(resource.Id, pageNum, pageSize);
+                var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
+
+                var parsedPaged = pagedRecords
+                    .Select(r => DeserializeRecord(r.Id, r.Data))
+                    .ToList();
+
+                return new PaginatedResponseDto
+                {
+                    Data = parsedPaged,
+                    Page = pageNum,
+                    Limit = pageSize,
+                    Total = totalCount,
+                    TotalPages = totalPages
+                };
+            }
+
             var records = await runtimeRepository.GetAllRecords(resource.Id);
 
             // deserialize all records from JSON string to dictionary

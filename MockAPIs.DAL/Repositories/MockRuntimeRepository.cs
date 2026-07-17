@@ -32,6 +32,17 @@ namespace MockAPIs.DAL.Repositories
             return await context.MockRecords.Where(m => m.ResourceId == resourceId).ToListAsync();
         }
 
+        public async Task<(List<MockRecord> Records, int TotalCount)> GetPagedRecordsAsync(Guid resourceId, int page, int pageSize)
+        {
+            var query = context.MockRecords.Where(m => m.ResourceId == resourceId).AsNoTracking();
+            var totalCount = await query.CountAsync();
+            var records = await query.OrderBy(m => m.CreatedAt)
+                                     .Skip((page - 1) * pageSize)
+                                     .Take(pageSize)
+                                     .ToListAsync();
+            return (records, totalCount);
+        }
+
         public async Task<Project?> GetProjectByToken(string token)
         {
             return await context.Projects.FirstOrDefaultAsync(p => p.Token == token && p.IsActive);
