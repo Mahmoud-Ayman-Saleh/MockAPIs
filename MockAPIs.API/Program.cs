@@ -91,17 +91,15 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
+app.MapOpenApi();
 
-    app.UseSwaggerUI(
-        options =>
-        {
-            options.SwaggerEndpoint("/openapi/v1.json", "MockAPIs API");
-        }
-    );
-}
+app.UseSwaggerUI(
+    options =>
+    {
+        options.SwaggerEndpoint("/openapi/v1.json", "MockAPIs API");
+        options.RoutePrefix = string.Empty;
+    }
+);
 
 app.UseHttpsRedirection();
 
