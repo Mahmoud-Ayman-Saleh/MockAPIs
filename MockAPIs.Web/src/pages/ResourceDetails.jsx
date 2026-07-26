@@ -1,0 +1,286 @@
+import { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { api } from '../services/api';
+
+export function ResourceDetails() {
+  const { projectId, resourceId } = useParams();
+
+  const [fields, setFields] = useState([]);
+  const [loadingFields, setLoadingFields] = useState(true);
+  const [error, setError] = useState(null);
+  const [successMsg, setSuccessMsg] = useState(null);
+
+  // Field Form Modal State
+  const [showFieldModal, setShowFieldModal] = useState(false);
+  const [editingFieldId, setEditingFieldId] = useState(null);
+  const [fieldName, setFieldName] = useState('');
+  const [dataType, setDataType] = useState('String');
+  const [fakerHint, setFakerHint] = useState('');
+  const [isRequired, setIsRequired] = useState(false);
+
+  // Endpoint Config State
+  const [config, setConfig] = useState({
+    getList: true,
+    getById: true,
+    post: true,
+    put: true,
+    delete: true,
+    enablePagination: true,
+    enableSearch: true,
+  });
+
+  // Data Generation & Preview State
+  const [previewData, setPreviewData] = useState(null);
+  const [loadingPreview, setLoadingPreview] = useState(false);
+  const [generateCount, setGenerateCount] = useState(20);
+  const [generating, setGenerating] = useState(false);
+
+  const fetchFields = async () => {
+    setLoadingFields(true);
+    try {
+      const res = await api.get(`/api/resources/${resourceId}/fields`);
+      setFields(res.data);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to fetch resource fields.');
+    } finally {
+      setLoadingFields(false);
+    }
+  };
+
+  useEffect(() => {
+    if (resourceId) fetchFields();
+  }, [resourceId]);
+
+  const openCreateModal = () => {
+    setEditingFieldId(null);
+    setFieldName('');
+    setDataType('String');
+    setFakerHint('');
+    setIsRequired(false);
+    setShowFieldModal(true);
+  };
+
+  const openEditModal = (field) => {
+    setEditingFieldId(field.id);
+    setFieldName(field.name);
+    setDataType(field.dataType);
+    setFakerHint(field.fakerHint || '');
+    setIsRequired(field.isRequired);
+    setShowFieldModal(true);
+  };
+
+  const handleSaveField = async (e) => {
+    e.preventDefault();
+    setError(null);
+    const dto = { name: fieldName, dataType, fakerHint: fakerHint || null, isRequired };
+
+    try {
+      if (editingFieldId) {
+        await api.put(`/api/resources/${resourceId}/fields/${editingFieldId}`, dto);
+      } else {
+        await api.post(`/api/resources/${resourceId}/fields`, dto);
+      }
+      setShowFieldModal(false);
+      fetchFields();
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to save field definition.');
+    }
+  };
+
+  const handleDeleteField = async (fieldId) => {
+    if (!window.confirm('Delete this field definition?')) return;
+    try {
+      await api.delete(`/api/resources/${resourceId}/fields/${fieldId}`);
+      fetchFields();
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to delete field.');
+    }
+  };
+
+  const handleSaveConfig = async () => {
+    setError(null);
+    try {
+      const res = await api.put(`/api/resources/${resourceId}/endpoint-config`, config);
+      setConfig(res.data);
+      setSuccessMsg('Endpoint configuration saved successfully.');
+      setTimeout(() => setSuccessMsg(null), 3000);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to update endpoint configuration.');
+    }
+  };
+
+  const handleFetchPreview = async () => {
+    setLoadingPreview(true);
+    try {
+      const res = await api.get(`/api/resources/${resourceId}/preview`);
+      setPreviewData(res.data.preview);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to generate preview data.');
+    } finally {
+      setLoadingPreview(false);
+    }
+  };
+
+  const handleGenerateData = async () => {
+    setGenerating(true);
+    setError(null);
+    try {
+      const res = await api.post(`/api/resources/${resourceId}/generate`, { count: parseInt(generateCount, 10) });
+      setSuccessMsg(`Successfully generated ${res.data.generatedCount} records.`);
+      setTimeout(() => setSuccessMsg(null), 3000);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to bulk generate data.');
+    } finally {
+      setGenerating(false);
+    }
+  };
+
+  return (
+    <div>
+      <div style={{ marginBottom: '16px' }}>
+        <Link to={`/projects/${projectId}`} style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
+          ← Back to Project Details
+        </Link>
+      </div>
+
+      {error && <div className="alert alert-danger">{error}</div>}
+      {successMsg && <div className="alert alert-info">{successMsg}</div>}
+
+      {/* Fields Section */}
+      <div className="card">
+        <div className="card-header">
+          <h2 className="card-title">Schema Fields</h2>
+          <button onClick={openCreateModal} className="btn btn-primary btn-sm">
+            + Add Field
+          </button>
+        </div>
+
+        {showFieldModal && (
+          <form onSubmit={handleSaveField} style={{ background: '#f8fafc', padding: '16px', borderRadius: '6px', marginBottom: '16px', border: '1px solid var(--border-color)' }}>
+            <h4 style={{ marginBottom: '12px', fontSize: '14px' }}>{editingFieldId ? 'Edit Field' : 'Add New Field'}</h4>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+              <div>
+                <label className="form-label">Field Name</label>
+                <input type="text" className="form-control" value={fieldName} onChange={(e) => setFieldName(e.target.value)} required />
+              </div>
+              <div>
+                <label className="form-label">Data Type</label>
+                <select className="form-control" value={dataType} onChange={(e) => setDataType(e.target.value)}>
+                  <option value="String">String</option>
+                  <option value="Integer">Integer</option>
+                  <option value="Decimal">Decimal</option>
+                  <option value="Boolean">Boolean</option>
+                  <option value="DateTime">DateTime</option>
+                  <option value="Guid">Guid</option>
+                </select>
+              </div>
+              <div>
+                <label className="form-label">Faker Hint (Optional)</label>
+                <input type="text" className="form-control" placeholder="e.g. Commerce.Price, Name.FullName" value={fakerHint} onChange={(e) => setFakerHint(e.target.value)} />
+              </div>
+            </div>
+            <div className="form-group" style={{ marginBottom: '12px' }}>
+              <label className="form-checkbox">
+                <input type="checkbox" checked={isRequired} onChange={(e) => setIsRequired(e.target.checked)} />
+                Is Required
+              </label>
+            </div>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <button type="submit" className="btn btn-primary btn-sm">Save Field</button>
+              <button type="button" onClick={() => setShowFieldModal(false)} className="btn btn-secondary btn-sm">Cancel</button>
+            </div>
+          </form>
+        )}
+
+        {loadingFields ? (
+          <div className="loading-spinner">Loading fields...</div>
+        ) : fields.length === 0 ? (
+          <div className="empty-state">No fields defined yet. Click "+ Add Field" to configure the resource schema.</div>
+        ) : (
+          <div className="table-container">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Field Name</th>
+                  <th>Data Type</th>
+                  <th>Faker Hint</th>
+                  <th>Required</th>
+                  <th style={{ textAlign: 'right' }}>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {fields.map((f) => (
+                  <tr key={f.id}>
+                    <td><strong>{f.name}</strong></td>
+                    <td><code>{f.dataType}</code></td>
+                    <td>{f.fakerHint ? <code>{f.fakerHint}</code> : <span style={{ color: 'var(--text-muted)' }}>-</span>}</td>
+                    <td>{f.isRequired ? <span className="badge badge-warning">Required</span> : <span className="badge badge-secondary">Optional</span>}</td>
+                    <td style={{ textAlign: 'right' }}>
+                      <button onClick={() => openEditModal(f)} className="btn btn-secondary btn-sm" style={{ marginRight: '6px' }}>Edit</button>
+                      <button onClick={() => handleDeleteField(f.id)} className="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
+      {/* Endpoint Settings */}
+      <div className="card">
+        <h2 className="card-title" style={{ marginBottom: '16px' }}>Endpoint Configuration</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '12px', marginBottom: '16px' }}>
+          <label className="form-checkbox">
+            <input type="checkbox" checked={config.getList} onChange={(e) => setConfig({ ...config, getList: e.target.checked })} /> GET List
+          </label>
+          <label className="form-checkbox">
+            <input type="checkbox" checked={config.getById} onChange={(e) => setConfig({ ...config, getById: e.target.checked })} /> GET by ID
+          </label>
+          <label className="form-checkbox">
+            <input type="checkbox" checked={config.post} onChange={(e) => setConfig({ ...config, post: e.target.checked })} /> POST Create
+          </label>
+          <label className="form-checkbox">
+            <input type="checkbox" checked={config.put} onChange={(e) => setConfig({ ...config, put: e.target.checked })} /> PUT Update
+          </label>
+          <label className="form-checkbox">
+            <input type="checkbox" checked={config.delete} onChange={(e) => setConfig({ ...config, delete: e.target.checked })} /> DELETE
+          </label>
+          <label className="form-checkbox">
+            <input type="checkbox" checked={config.enablePagination} onChange={(e) => setConfig({ ...config, enablePagination: e.target.checked })} /> Pagination
+          </label>
+          <label className="form-checkbox">
+            <input type="checkbox" checked={config.enableSearch} onChange={(e) => setConfig({ ...config, enableSearch: e.target.checked })} /> Search
+          </label>
+        </div>
+        <button onClick={handleSaveConfig} className="btn btn-primary btn-sm">Save Config</button>
+      </div>
+
+      {/* Data Generator & Preview */}
+      <div className="card">
+        <h2 className="card-title" style={{ marginBottom: '16px' }}>Data Generation & Live Preview</h2>
+        <div style={{ display: 'flex', gap: '16px', alignItems: 'center', marginBottom: '16px' }}>
+          <button onClick={handleFetchPreview} className="btn btn-secondary" disabled={loadingPreview}>
+            {loadingPreview ? 'Loading Preview...' : '🔍 Live Sample Preview'}
+          </button>
+
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+            <input type="number" className="form-control" style={{ width: '90px' }} value={generateCount} onChange={(e) => setGenerateCount(e.target.value)} min="1" max="500" />
+            <button onClick={handleGenerateData} className="btn btn-primary" disabled={generating}>
+              {generating ? 'Generating...' : '⚡ Bulk Generate Records'}
+            </button>
+          </div>
+        </div>
+
+        {previewData && (
+          <div style={{ marginTop: '12px' }}>
+            <h4 style={{ fontSize: '13px', fontWeight: 600, marginBottom: '8px' }}>Sample Output JSON:</h4>
+            <pre style={{ maxHeight: '300px', overflowY: 'auto', background: '#0f172a', color: '#e2e8f0', padding: '12px', borderRadius: '6px' }}>
+              {JSON.stringify(previewData, null, 2)}
+            </pre>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
