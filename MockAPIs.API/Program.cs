@@ -30,6 +30,17 @@ builder.Services.AddHttpsRedirection(options =>
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
+// ─── CORS Policy ──────────────────────────────────────────────
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 // ─── Database ─────────────────────────────────────────────────
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -120,6 +131,7 @@ app.UseSwaggerUI(
 
 app.UseMiddleware<ExceptionMiddleware>();
 
+app.UseCors("AllowAll");
 
 app.UseAuthentication();
 app.UseAuthorization();
