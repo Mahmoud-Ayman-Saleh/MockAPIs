@@ -78,13 +78,11 @@ namespace MockAPIs.BLL.Services
 
             List<Field> fields = await fieldRepository.GetAllByResourceId(resourceId);
 
-            int n = fields.Count;
+            List<FieldDto> ans = new List<FieldDto>(fields.Count);
 
-            List<FieldDto> ans = new List<FieldDto>(n);
-
-            for (int i = 0; i < n; i++)
+            for (int i = 0; i < fields.Count; i++)
             {
-                ans[i] = FieldDto.FromEntity(fields[i]);
+                ans.Add(FieldDto.FromEntity(fields[i]));
             }
             
             return ans;
