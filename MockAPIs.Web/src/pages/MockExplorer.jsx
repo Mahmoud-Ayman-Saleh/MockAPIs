@@ -21,7 +21,7 @@ export function MockExplorer() {
   const [error, setError] = useState(null);
 
   const getBaseUrl = () => {
-    const apiBase = import.meta.env.VITE_API_BASE_URL || window.location.origin;
+    const apiBase = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5167';
     return `${apiBase}/${token}/api/v1/${resourceSlug}`;
   };
 
