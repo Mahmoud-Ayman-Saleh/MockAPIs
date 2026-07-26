@@ -69,6 +69,14 @@ export function ResourceDetails() {
     setShowFieldModal(true);
   };
 
+  const handleDataTypeChange = (newType) => {
+    setDataType(newType);
+    // Only String type supports faker hints
+    if (newType !== 'String') {
+      setFakerHint('');
+    }
+  };
+
   const handleSaveField = async (e) => {
     e.preventDefault();
     setError(null);
@@ -158,27 +166,93 @@ export function ResourceDetails() {
         {showFieldModal && (
           <form onSubmit={handleSaveField} style={{ background: '#f8fafc', padding: '16px', borderRadius: '6px', marginBottom: '16px', border: '1px solid var(--border-color)' }}>
             <h4 style={{ marginBottom: '12px', fontSize: '14px' }}>{editingFieldId ? 'Edit Field' : 'Add New Field'}</h4>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
               <div>
                 <label className="form-label">Field Name</label>
                 <input type="text" className="form-control" value={fieldName} onChange={(e) => setFieldName(e.target.value)} required />
               </div>
               <div>
                 <label className="form-label">Data Type</label>
-                <select className="form-control" value={dataType} onChange={(e) => setDataType(e.target.value)}>
+                <select className="form-control" value={dataType} onChange={(e) => handleDataTypeChange(e.target.value)}>
                   <option value="String">String</option>
-                  <option value="Integer">Integer</option>
-                  <option value="Decimal">Decimal</option>
+                  <option value="Number">Number</option>
                   <option value="Boolean">Boolean</option>
-                  <option value="DateTime">DateTime</option>
-                  <option value="Guid">Guid</option>
+                  <option value="Date">Date</option>
+                  <option value="Image">Image</option>
+                  <option value="UUID">UUID</option>
+                  <option value="Email">Email</option>
+                  <option value="Name">Name</option>
+                  <option value="Price">Price</option>
+                  <option value="Paragraph">Paragraph</option>
                 </select>
               </div>
-              <div>
-                <label className="form-label">Faker Hint (Optional)</label>
-                <input type="text" className="form-control" placeholder="e.g. Commerce.Price, Name.FullName" value={fakerHint} onChange={(e) => setFakerHint(e.target.value)} />
-              </div>
             </div>
+            {dataType === 'String' && (
+              <div className="form-group">
+                <label className="form-label">Faker Hint</label>
+                <select className="form-control" value={fakerHint} onChange={(e) => setFakerHint(e.target.value)}>
+                  <option value="">— None (random word) —</option>
+                  <optgroup label="Commerce">
+                    <option value="Commerce.ProductName">Commerce.ProductName</option>
+                    <option value="Commerce.Department">Commerce.Department</option>
+                    <option value="Commerce.ProductAdjective">Commerce.ProductAdjective</option>
+                    <option value="Commerce.ProductMaterial">Commerce.ProductMaterial</option>
+                    <option value="Commerce.Categories">Commerce.Categories</option>
+                  </optgroup>
+                  <optgroup label="Finance">
+                    <option value="Finance.Amount">Finance.Amount</option>
+                    <option value="Finance.Currency">Finance.Currency</option>
+                    <option value="Finance.AccountName">Finance.AccountName</option>
+                  </optgroup>
+                  <optgroup label="Internet">
+                    <option value="Internet.Email">Internet.Email</option>
+                    <option value="Internet.Username">Internet.Username</option>
+                    <option value="Internet.Url">Internet.Url</option>
+                    <option value="Internet.Ip">Internet.Ip</option>
+                    <option value="Internet.UserAgent">Internet.UserAgent</option>
+                  </optgroup>
+                  <optgroup label="Image">
+                    <option value="Image.Url">Image.Url</option>
+                  </optgroup>
+                  <optgroup label="Name">
+                    <option value="Name.FullName">Name.FullName</option>
+                    <option value="Name.FirstName">Name.FirstName</option>
+                    <option value="Name.LastName">Name.LastName</option>
+                    <option value="Name.Prefix">Name.Prefix</option>
+                  </optgroup>
+                  <optgroup label="Address">
+                    <option value="Address.City">Address.City</option>
+                    <option value="Address.Country">Address.Country</option>
+                    <option value="Address.StreetAddress">Address.StreetAddress</option>
+                    <option value="Address.ZipCode">Address.ZipCode</option>
+                    <option value="Address.State">Address.State</option>
+                  </optgroup>
+                  <optgroup label="Phone">
+                    <option value="Phone.PhoneNumber">Phone.PhoneNumber</option>
+                  </optgroup>
+                  <optgroup label="Company">
+                    <option value="Company.CompanyName">Company.CompanyName</option>
+                    <option value="Company.CatchPhrase">Company.CatchPhrase</option>
+                    <option value="Company.Bs">Company.Bs</option>
+                  </optgroup>
+                  <optgroup label="Lorem">
+                    <option value="Lorem.Word">Lorem.Word</option>
+                    <option value="Lorem.Sentence">Lorem.Sentence</option>
+                    <option value="Lorem.Paragraph">Lorem.Paragraph</option>
+                  </optgroup>
+                  <optgroup label="Date">
+                    <option value="Date.Past">Date.Past</option>
+                    <option value="Date.Future">Date.Future</option>
+                    <option value="Date.Recent">Date.Recent</option>
+                  </optgroup>
+                  <optgroup label="Random">
+                    <option value="Random.Number">Random.Number</option>
+                    <option value="Random.Bool">Random.Bool</option>
+                    <option value="Random.UUID">Random.UUID</option>
+                  </optgroup>
+                </select>
+              </div>
+            )}
             <div className="form-group" style={{ marginBottom: '12px' }}>
               <label className="form-checkbox">
                 <input type="checkbox" checked={isRequired} onChange={(e) => setIsRequired(e.target.checked)} />
