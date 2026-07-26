@@ -105,7 +105,15 @@ builder.Services.AddScoped<IMockRuntimeService, MockRuntimeService>();
 var app = builder.Build();
 
 app.UseForwardedHeaders();
-app.UseHttpsRedirection();
+
+// ─── CORS must be early in the pipeline ───────────────────────
+app.UseCors("AllowAll");
+
+// Only redirect to HTTPS in production (avoids breaking local dev on HTTP)
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
 // ─── Seed Roles ───────────────────────────────────────────────
 using (var scope = app.Services.CreateScope())
@@ -130,8 +138,6 @@ app.UseSwaggerUI(
 );
 
 app.UseMiddleware<ExceptionMiddleware>();
-
-app.UseCors("AllowAll");
 
 app.UseAuthentication();
 app.UseAuthorization();
