@@ -13,14 +13,17 @@ export function Navbar() {
   return (
     <header style={{ background: '#ffffff', borderBottom: '1px solid var(--border-color)', padding: '12px 24px' }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
           <Link to="/" style={{ fontWeight: 700, fontSize: '16px', color: 'var(--primary)', textDecoration: 'none' }}>
             MockAPIs Admin
           </Link>
           {isAuthenticated && (
             <nav style={{ display: 'flex', gap: '16px', fontSize: '13px' }}>
-              <Link to="/projects" style={{ color: 'var(--text-main)', textDecoration: 'none' }}>
+              <Link to="/projects" style={{ color: 'var(--text-main)', textDecoration: 'none', fontWeight: 500 }}>
                 Projects
+              </Link>
+              <Link to="/explorer" style={{ color: 'var(--text-main)', textDecoration: 'none', fontWeight: 500 }}>
+                API Explorer
               </Link>
             </nav>
           )}
