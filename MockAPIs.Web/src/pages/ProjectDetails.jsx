@@ -143,7 +143,7 @@ export function ProjectDetails() {
         <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid var(--border-color)', fontSize: '13px' }}>
           <strong>Mock API Base URL:</strong>
           <pre style={{ marginTop: '6px', display: 'inline-block', width: '100%', overflowX: 'auto' }}>
-            {project.baseUrl}
+            {`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5167'}/${project.token}/api/v1`}
           </pre>
         </div>
       </div>
