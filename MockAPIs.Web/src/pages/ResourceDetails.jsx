@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { api } from '../services/api';
+import { FakerHintSelect } from '../components/FakerHintSelect';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5167';
 
@@ -218,109 +219,9 @@ export function ResourceDetails() {
             {dataType === 'String' && (
               <div className="form-group">
                 <label className="form-label">Faker Hint (Bogus Generator)</label>
-                <input
-                  type="text"
-                  list="faker-options"
-                  className="form-control"
-                  placeholder="Select from list or type any custom Bogus method (e.g. Commerce.ProductName, Finance.Iban)"
-                  value={fakerHint}
-                  onChange={(e) => setFakerHint(e.target.value)}
-                />
-                <datalist id="faker-options">
-                  <option value="Commerce.ProductName" />
-                  <option value="Commerce.Department" />
-                  <option value="Commerce.ProductAdjective" />
-                  <option value="Commerce.ProductMaterial" />
-                  <option value="Commerce.Categories" />
-                  <option value="Commerce.Price" />
-                  <option value="Commerce.Color" />
-                  <option value="Commerce.Isbn" />
-
-                  <option value="Finance.Amount" />
-                  <option value="Finance.Currency" />
-                  <option value="Finance.AccountName" />
-                  <option value="Finance.AccountNumber" />
-                  <option value="Finance.Bic" />
-                  <option value="Finance.CreditCard" />
-                  <option value="Finance.Iban" />
-                  <option value="Finance.BitcoinAddress" />
-
-                  <option value="Internet.Email" />
-                  <option value="Internet.Username" />
-                  <option value="Internet.Url" />
-                  <option value="Internet.Ip" />
-                  <option value="Internet.Ipv6" />
-                  <option value="Internet.Mac" />
-                  <option value="Internet.UserAgent" />
-                  <option value="Internet.Password" />
-                  <option value="Internet.Domain" />
-                  <option value="Internet.Avatar" />
-
-                  <option value="Image.Url" />
-
-                  <option value="Name.FullName" />
-                  <option value="Name.FirstName" />
-                  <option value="Name.LastName" />
-                  <option value="Name.Prefix" />
-                  <option value="Name.Suffix" />
-                  <option value="Name.JobTitle" />
-                  <option value="Name.JobDescriptor" />
-
-                  <option value="Address.City" />
-                  <option value="Address.Country" />
-                  <option value="Address.CountryCode" />
-                  <option value="Address.StreetAddress" />
-                  <option value="Address.ZipCode" />
-                  <option value="Address.State" />
-                  <option value="Address.Latitude" />
-                  <option value="Address.Longitude" />
-                  <option value="Address.BuildingNumber" />
-
-                  <option value="Phone.PhoneNumber" />
-
-                  <option value="Company.CompanyName" />
-                  <option value="Company.CatchPhrase" />
-                  <option value="Company.Bs" />
-                  <option value="Company.Suffix" />
-
-                  <option value="Lorem.Word" />
-                  <option value="Lorem.Sentence" />
-                  <option value="Lorem.Paragraph" />
-                  <option value="Lorem.Text" />
-                  <option value="Lorem.Slug" />
-
-                  <option value="Date.Past" />
-                  <option value="Date.Future" />
-                  <option value="Date.Recent" />
-                  <option value="Date.Month" />
-                  <option value="Date.Weekday" />
-
-                  <option value="System.FileName" />
-                  <option value="System.Mime" />
-                  <option value="System.FileType" />
-                  <option value="System.Semver" />
-                  <option value="Database.Column" />
-                  <option value="Database.Type" />
-                  <option value="Database.Engine" />
-
-                  <option value="Hacker.Phrase" />
-                  <option value="Hacker.Noun" />
-                  <option value="Hacker.Verb" />
-                  <option value="Hacker.IngVerb" />
-                  <option value="Hacker.Abbreviation" />
-
-                  <option value="Vehicle.Vin" />
-                  <option value="Vehicle.Manufacturer" />
-                  <option value="Vehicle.Model" />
-                  <option value="Vehicle.Type" />
-                  <option value="Vehicle.Fuel" />
-
-                  <option value="Random.Number" />
-                  <option value="Random.Bool" />
-                  <option value="Random.UUID" />
-                </datalist>
+                <FakerHintSelect value={fakerHint} onChange={(val) => setFakerHint(val)} />
                 <span style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px', display: 'block' }}>
-                  Supports all Bogus .NET generators. Type any <code>Category.Method</code> (e.g., <code>Internet.Email</code>).
+                  Choose from categorized presets or search/type any custom Bogus generator method.
                 </span>
               </div>
             )}
