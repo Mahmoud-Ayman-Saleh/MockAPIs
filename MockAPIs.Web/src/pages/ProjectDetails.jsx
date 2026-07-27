@@ -211,7 +211,7 @@ export function ProjectDetails() {
                     <span className="badge badge-secondary">{res.count} records</span>
                   </td>
                   <td>
-                    <code>{project.baseUrl}/{res.slug}</code>
+                    <code>{`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5167'}/${project.token}/api/v1/${res.slug}`}</code>
                   </td>
                   <td style={{ textAlign: 'right', display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
                     <Link to={`/projects/${project.id}/resources/${res.id}`} className="btn btn-secondary btn-sm">
