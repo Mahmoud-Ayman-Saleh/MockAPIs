@@ -21,7 +21,7 @@ namespace MockAPIs.DAL.Repositories
 
         public async Task<List<Project>> GetAllByUserId(Guid userId)
         {
-            return await context.Projects.Where(p => p.UserId == userId).ToListAsync();
+            return await context.Projects.Include(p => p.Resources).Where(p => p.UserId == userId).ToListAsync();
         }
 
         public async Task<Project?> GetById(Guid id)
