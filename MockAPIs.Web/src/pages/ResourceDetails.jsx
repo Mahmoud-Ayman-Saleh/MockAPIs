@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { api } from '../services/api';
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5167';
+
 export function ResourceDetails() {
   const { projectId, resourceId } = useParams();
 
@@ -9,6 +11,10 @@ export function ResourceDetails() {
   const [loadingFields, setLoadingFields] = useState(true);
   const [error, setError] = useState(null);
   const [successMsg, setSuccessMsg] = useState(null);
+
+  // Project/Resource metadata for endpoint examples
+  const [projectToken, setProjectToken] = useState('');
+  const [resourceSlug, setResourceSlug] = useState('');
 
   // Field Form Modal State
   const [showFieldModal, setShowFieldModal] = useState(false);
@@ -34,6 +40,23 @@ export function ResourceDetails() {
   const [loadingPreview, setLoadingPreview] = useState(false);
   const [generateCount, setGenerateCount] = useState(20);
   const [generating, setGenerating] = useState(false);
+
+  // Fetch project token and resource slug for endpoint examples
+  useEffect(() => {
+    const fetchMeta = async () => {
+      try {
+        const [projRes, resRes] = await Promise.all([
+          api.get(`/api/Project/${projectId}`),
+          api.get(`/api/resources/${resourceId}/details`),
+        ]);
+        setProjectToken(projRes.data.token);
+        setResourceSlug(resRes.data.slug);
+      } catch {
+        // Non-critical — endpoint examples will fall back to placeholders
+      }
+    };
+    fetchMeta();
+  }, [projectId, resourceId]);
 
   const fetchFields = async () => {
     setLoadingFields(true);
@@ -305,57 +328,45 @@ export function ResourceDetails() {
       <div className="card">
         <h2 className="card-title" style={{ marginBottom: '4px' }}>Endpoint Configuration</h2>
         <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '16px' }}>
-          Toggle which HTTP methods are available on the mock runtime API. Examples use your project token and resource slug.
+          Toggle which HTTP methods are available on your mock API.
         </p>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '16px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px', background: '#f8fafc', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
-            <label className="form-checkbox" style={{ marginBottom: 0 }}>
-              <input type="checkbox" checked={config.getList} onChange={(e) => setConfig({ ...config, getList: e.target.checked })} /> GET List
-            </label>
-            <code style={{ fontSize: '12px' }}>GET /{'{token}'}/api/v1/{'{resource}'}</code>
-          </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '16px' }}>
+          {[
+            { key: 'getList',  label: 'GET List',    method: 'GET',    path: `${API_BASE}/${projectToken || '{token}'}/api/v1/${resourceSlug || '{resource}'}` },
+            { key: 'getById',  label: 'GET by ID',   method: 'GET',    path: `${API_BASE}/${projectToken || '{token}'}/api/v1/${resourceSlug || '{resource}'}/{id}` },
+            { key: 'post',     label: 'POST Create', method: 'POST',   path: `${API_BASE}/${projectToken || '{token}'}/api/v1/${resourceSlug || '{resource}'}` },
+            { key: 'put',      label: 'PUT Update',  method: 'PUT',    path: `${API_BASE}/${projectToken || '{token}'}/api/v1/${resourceSlug || '{resource}'}/{id}` },
+            { key: 'delete',   label: 'DELETE',      method: 'DELETE', path: `${API_BASE}/${projectToken || '{token}'}/api/v1/${resourceSlug || '{resource}'}/{id}` },
+          ].map(({ key, label, method, path }) => (
+            <div key={key} style={{ background: '#f8fafc', borderRadius: '6px', border: '1px solid var(--border-color)', padding: '10px 12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
+                <label className="form-checkbox" style={{ marginBottom: 0 }}>
+                  <input type="checkbox" checked={config[key]} onChange={(e) => setConfig({ ...config, [key]: e.target.checked })} /> {label}
+                </label>
+                <span style={{ fontSize: '11px', fontWeight: 600, color: method === 'GET' ? '#16a34a' : method === 'POST' ? '#2563eb' : method === 'PUT' ? '#d97706' : '#dc2626', textTransform: 'uppercase' }}>{method}</span>
+              </div>
+              <code style={{ fontSize: '11px', color: 'var(--text-secondary)', wordBreak: 'break-all', display: 'block' }}>{path}</code>
+            </div>
+          ))}
 
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px', background: '#f8fafc', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
-            <label className="form-checkbox" style={{ marginBottom: 0 }}>
-              <input type="checkbox" checked={config.getById} onChange={(e) => setConfig({ ...config, getById: e.target.checked })} /> GET by ID
-            </label>
-            <code style={{ fontSize: '12px' }}>GET /{'{token}'}/api/v1/{'{resource}'}/{'{id}'}</code>
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px', background: '#f8fafc', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
-            <label className="form-checkbox" style={{ marginBottom: 0 }}>
-              <input type="checkbox" checked={config.post} onChange={(e) => setConfig({ ...config, post: e.target.checked })} /> POST Create
-            </label>
-            <code style={{ fontSize: '12px' }}>POST /{'{token}'}/api/v1/{'{resource}'}</code>
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px', background: '#f8fafc', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
-            <label className="form-checkbox" style={{ marginBottom: 0 }}>
-              <input type="checkbox" checked={config.put} onChange={(e) => setConfig({ ...config, put: e.target.checked })} /> PUT Update
-            </label>
-            <code style={{ fontSize: '12px' }}>PUT /{'{token}'}/api/v1/{'{resource}'}/{'{id}'}</code>
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px', background: '#f8fafc', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
-            <label className="form-checkbox" style={{ marginBottom: 0 }}>
-              <input type="checkbox" checked={config.delete} onChange={(e) => setConfig({ ...config, delete: e.target.checked })} /> DELETE
-            </label>
-            <code style={{ fontSize: '12px' }}>DELETE /{'{token}'}/api/v1/{'{resource}'}/{'{id}'}</code>
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px', background: '#f8fafc', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
-            <label className="form-checkbox" style={{ marginBottom: 0 }}>
-              <input type="checkbox" checked={config.enablePagination} onChange={(e) => setConfig({ ...config, enablePagination: e.target.checked })} /> Pagination
-            </label>
-            <code style={{ fontSize: '12px' }}>GET ...?page=1&limit=10</code>
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px', background: '#f8fafc', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
-            <label className="form-checkbox" style={{ marginBottom: 0 }}>
-              <input type="checkbox" checked={config.enableSearch} onChange={(e) => setConfig({ ...config, enableSearch: e.target.checked })} /> Search
-            </label>
-            <code style={{ fontSize: '12px' }}>GET ...?search=keyword</code>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <div style={{ flex: 1, background: '#f8fafc', borderRadius: '6px', border: '1px solid var(--border-color)', padding: '10px 12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
+                <label className="form-checkbox" style={{ marginBottom: 0 }}>
+                  <input type="checkbox" checked={config.enablePagination} onChange={(e) => setConfig({ ...config, enablePagination: e.target.checked })} /> Pagination
+                </label>
+              </div>
+              <code style={{ fontSize: '11px', color: 'var(--text-secondary)', display: 'block' }}>?page=1&limit=10</code>
+            </div>
+            <div style={{ flex: 1, background: '#f8fafc', borderRadius: '6px', border: '1px solid var(--border-color)', padding: '10px 12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
+                <label className="form-checkbox" style={{ marginBottom: 0 }}>
+                  <input type="checkbox" checked={config.enableSearch} onChange={(e) => setConfig({ ...config, enableSearch: e.target.checked })} /> Search
+                </label>
+              </div>
+              <code style={{ fontSize: '11px', color: 'var(--text-secondary)', display: 'block' }}>?search=keyword</code>
+            </div>
           </div>
         </div>
 
