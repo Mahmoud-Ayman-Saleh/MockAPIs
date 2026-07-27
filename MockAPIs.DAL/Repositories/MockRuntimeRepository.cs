@@ -50,7 +50,7 @@ namespace MockAPIs.DAL.Repositories
 
         public async Task<MockRecord?> GetRecordById(Guid resourceId, Guid recordId)
         {
-            return await context.MockRecords.FirstOrDefaultAsync(m => m.ResourceId == resourceId && m.Id == resourceId);
+            return await context.MockRecords.FirstOrDefaultAsync(m => m.ResourceId == resourceId && m.Id == recordId);
         }
 
         public async Task<Resource?> GetResourceWithConfig(Guid projectId, string resourceSlug)
