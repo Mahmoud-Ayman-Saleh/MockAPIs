@@ -303,30 +303,62 @@ export function ResourceDetails() {
 
       {/* Endpoint Settings */}
       <div className="card">
-        <h2 className="card-title" style={{ marginBottom: '16px' }}>Endpoint Configuration</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '12px', marginBottom: '16px' }}>
-          <label className="form-checkbox">
-            <input type="checkbox" checked={config.getList} onChange={(e) => setConfig({ ...config, getList: e.target.checked })} /> GET List
-          </label>
-          <label className="form-checkbox">
-            <input type="checkbox" checked={config.getById} onChange={(e) => setConfig({ ...config, getById: e.target.checked })} /> GET by ID
-          </label>
-          <label className="form-checkbox">
-            <input type="checkbox" checked={config.post} onChange={(e) => setConfig({ ...config, post: e.target.checked })} /> POST Create
-          </label>
-          <label className="form-checkbox">
-            <input type="checkbox" checked={config.put} onChange={(e) => setConfig({ ...config, put: e.target.checked })} /> PUT Update
-          </label>
-          <label className="form-checkbox">
-            <input type="checkbox" checked={config.delete} onChange={(e) => setConfig({ ...config, delete: e.target.checked })} /> DELETE
-          </label>
-          <label className="form-checkbox">
-            <input type="checkbox" checked={config.enablePagination} onChange={(e) => setConfig({ ...config, enablePagination: e.target.checked })} /> Pagination
-          </label>
-          <label className="form-checkbox">
-            <input type="checkbox" checked={config.enableSearch} onChange={(e) => setConfig({ ...config, enableSearch: e.target.checked })} /> Search
-          </label>
+        <h2 className="card-title" style={{ marginBottom: '4px' }}>Endpoint Configuration</h2>
+        <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '16px' }}>
+          Toggle which HTTP methods are available on the mock runtime API. Examples use your project token and resource slug.
+        </p>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px', background: '#f8fafc', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
+            <label className="form-checkbox" style={{ marginBottom: 0 }}>
+              <input type="checkbox" checked={config.getList} onChange={(e) => setConfig({ ...config, getList: e.target.checked })} /> GET List
+            </label>
+            <code style={{ fontSize: '12px' }}>GET /{'{token}'}/api/v1/{'{resource}'}</code>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px', background: '#f8fafc', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
+            <label className="form-checkbox" style={{ marginBottom: 0 }}>
+              <input type="checkbox" checked={config.getById} onChange={(e) => setConfig({ ...config, getById: e.target.checked })} /> GET by ID
+            </label>
+            <code style={{ fontSize: '12px' }}>GET /{'{token}'}/api/v1/{'{resource}'}/{'{id}'}</code>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px', background: '#f8fafc', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
+            <label className="form-checkbox" style={{ marginBottom: 0 }}>
+              <input type="checkbox" checked={config.post} onChange={(e) => setConfig({ ...config, post: e.target.checked })} /> POST Create
+            </label>
+            <code style={{ fontSize: '12px' }}>POST /{'{token}'}/api/v1/{'{resource}'}</code>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px', background: '#f8fafc', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
+            <label className="form-checkbox" style={{ marginBottom: 0 }}>
+              <input type="checkbox" checked={config.put} onChange={(e) => setConfig({ ...config, put: e.target.checked })} /> PUT Update
+            </label>
+            <code style={{ fontSize: '12px' }}>PUT /{'{token}'}/api/v1/{'{resource}'}/{'{id}'}</code>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px', background: '#f8fafc', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
+            <label className="form-checkbox" style={{ marginBottom: 0 }}>
+              <input type="checkbox" checked={config.delete} onChange={(e) => setConfig({ ...config, delete: e.target.checked })} /> DELETE
+            </label>
+            <code style={{ fontSize: '12px' }}>DELETE /{'{token}'}/api/v1/{'{resource}'}/{'{id}'}</code>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px', background: '#f8fafc', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
+            <label className="form-checkbox" style={{ marginBottom: 0 }}>
+              <input type="checkbox" checked={config.enablePagination} onChange={(e) => setConfig({ ...config, enablePagination: e.target.checked })} /> Pagination
+            </label>
+            <code style={{ fontSize: '12px' }}>GET ...?page=1&limit=10</code>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px', background: '#f8fafc', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
+            <label className="form-checkbox" style={{ marginBottom: 0 }}>
+              <input type="checkbox" checked={config.enableSearch} onChange={(e) => setConfig({ ...config, enableSearch: e.target.checked })} /> Search
+            </label>
+            <code style={{ fontSize: '12px' }}>GET ...?search=keyword</code>
+          </div>
         </div>
+
         <button onClick={handleSaveConfig} className="btn btn-primary btn-sm">Save Config</button>
       </div>
 
