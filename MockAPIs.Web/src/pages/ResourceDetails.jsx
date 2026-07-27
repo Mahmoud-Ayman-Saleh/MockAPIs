@@ -217,115 +217,111 @@ export function ResourceDetails() {
             </div>
             {dataType === 'String' && (
               <div className="form-group">
-                <label className="form-label">Faker Hint</label>
-                <select className="form-control" value={fakerHint} onChange={(e) => setFakerHint(e.target.value)}>
-                  <option value="">— None (random word) —</option>
-                  <optgroup label="Commerce">
-                    <option value="Commerce.ProductName">Commerce.ProductName</option>
-                    <option value="Commerce.Department">Commerce.Department</option>
-                    <option value="Commerce.ProductAdjective">Commerce.ProductAdjective</option>
-                    <option value="Commerce.ProductMaterial">Commerce.ProductMaterial</option>
-                    <option value="Commerce.Categories">Commerce.Categories</option>
-                    <option value="Commerce.Price">Commerce.Price</option>
-                    <option value="Commerce.Color">Commerce.Color</option>
-                    <option value="Commerce.Isbn">Commerce.Isbn</option>
-                  </optgroup>
-                  <optgroup label="Finance">
-                    <option value="Finance.Amount">Finance.Amount</option>
-                    <option value="Finance.Currency">Finance.Currency</option>
-                    <option value="Finance.AccountName">Finance.AccountName</option>
-                    <option value="Finance.AccountNumber">Finance.AccountNumber</option>
-                    <option value="Finance.Bic">Finance.Bic</option>
-                    <option value="Finance.CreditCard">Finance.CreditCard</option>
-                    <option value="Finance.Iban">Finance.Iban</option>
-                  </optgroup>
-                  <optgroup label="Internet">
-                    <option value="Internet.Email">Internet.Email</option>
-                    <option value="Internet.Username">Internet.Username</option>
-                    <option value="Internet.Url">Internet.Url</option>
-                    <option value="Internet.Ip">Internet.Ip</option>
-                    <option value="Internet.Ipv6">Internet.Ipv6</option>
-                    <option value="Internet.Mac">Internet.Mac</option>
-                    <option value="Internet.UserAgent">Internet.UserAgent</option>
-                    <option value="Internet.Password">Internet.Password</option>
-                    <option value="Internet.Domain">Internet.Domain</option>
-                    <option value="Internet.Avatar">Internet.Avatar</option>
-                  </optgroup>
-                  <optgroup label="Image">
-                    <option value="Image.Url">Image.Url</option>
-                  </optgroup>
-                  <optgroup label="Name">
-                    <option value="Name.FullName">Name.FullName</option>
-                    <option value="Name.FirstName">Name.FirstName</option>
-                    <option value="Name.LastName">Name.LastName</option>
-                    <option value="Name.Prefix">Name.Prefix</option>
-                    <option value="Name.Suffix">Name.Suffix</option>
-                    <option value="Name.JobTitle">Name.JobTitle</option>
-                    <option value="Name.JobDescriptor">Name.JobDescriptor</option>
-                  </optgroup>
-                  <optgroup label="Address">
-                    <option value="Address.City">Address.City</option>
-                    <option value="Address.Country">Address.Country</option>
-                    <option value="Address.CountryCode">Address.CountryCode</option>
-                    <option value="Address.StreetAddress">Address.StreetAddress</option>
-                    <option value="Address.ZipCode">Address.ZipCode</option>
-                    <option value="Address.State">Address.State</option>
-                    <option value="Address.Latitude">Address.Latitude</option>
-                    <option value="Address.Longitude">Address.Longitude</option>
-                    <option value="Address.BuildingNumber">Address.BuildingNumber</option>
-                  </optgroup>
-                  <optgroup label="Phone">
-                    <option value="Phone.PhoneNumber">Phone.PhoneNumber</option>
-                  </optgroup>
-                  <optgroup label="Company">
-                    <option value="Company.CompanyName">Company.CompanyName</option>
-                    <option value="Company.CatchPhrase">Company.CatchPhrase</option>
-                    <option value="Company.Bs">Company.Bs</option>
-                    <option value="Company.Suffix">Company.Suffix</option>
-                  </optgroup>
-                  <optgroup label="Lorem">
-                    <option value="Lorem.Word">Lorem.Word</option>
-                    <option value="Lorem.Sentence">Lorem.Sentence</option>
-                    <option value="Lorem.Paragraph">Lorem.Paragraph</option>
-                    <option value="Lorem.Text">Lorem.Text</option>
-                    <option value="Lorem.Slug">Lorem.Slug</option>
-                  </optgroup>
-                  <optgroup label="Date">
-                    <option value="Date.Past">Date.Past</option>
-                    <option value="Date.Future">Date.Future</option>
-                    <option value="Date.Recent">Date.Recent</option>
-                    <option value="Date.Month">Date.Month</option>
-                    <option value="Date.Weekday">Date.Weekday</option>
-                  </optgroup>
-                  <optgroup label="System & Database">
-                    <option value="System.FileName">System.FileName</option>
-                    <option value="System.Mime">System.Mime</option>
-                    <option value="System.FileType">System.FileType</option>
-                    <option value="System.Semver">System.Semver</option>
-                    <option value="Database.Column">Database.Column</option>
-                    <option value="Database.Type">Database.Type</option>
-                    <option value="Database.Engine">Database.Engine</option>
-                  </optgroup>
-                  <optgroup label="Hacker">
-                    <option value="Hacker.Phrase">Hacker.Phrase</option>
-                    <option value="Hacker.Noun">Hacker.Noun</option>
-                    <option value="Hacker.Verb">Hacker.Verb</option>
-                    <option value="Hacker.IngVerb">Hacker.IngVerb</option>
-                    <option value="Hacker.Abbreviation">Hacker.Abbreviation</option>
-                  </optgroup>
-                  <optgroup label="Vehicle">
-                    <option value="Vehicle.Vin">Vehicle.Vin</option>
-                    <option value="Vehicle.Manufacturer">Vehicle.Manufacturer</option>
-                    <option value="Vehicle.Model">Vehicle.Model</option>
-                    <option value="Vehicle.Type">Vehicle.Type</option>
-                    <option value="Vehicle.Fuel">Vehicle.Fuel</option>
-                  </optgroup>
-                  <optgroup label="Random">
-                    <option value="Random.Number">Random.Number</option>
-                    <option value="Random.Bool">Random.Bool</option>
-                    <option value="Random.UUID">Random.UUID</option>
-                  </optgroup>
-                </select>
+                <label className="form-label">Faker Hint (Bogus Generator)</label>
+                <input
+                  type="text"
+                  list="faker-options"
+                  className="form-control"
+                  placeholder="Select from list or type any custom Bogus method (e.g. Commerce.ProductName, Finance.Iban)"
+                  value={fakerHint}
+                  onChange={(e) => setFakerHint(e.target.value)}
+                />
+                <datalist id="faker-options">
+                  <option value="Commerce.ProductName" />
+                  <option value="Commerce.Department" />
+                  <option value="Commerce.ProductAdjective" />
+                  <option value="Commerce.ProductMaterial" />
+                  <option value="Commerce.Categories" />
+                  <option value="Commerce.Price" />
+                  <option value="Commerce.Color" />
+                  <option value="Commerce.Isbn" />
+
+                  <option value="Finance.Amount" />
+                  <option value="Finance.Currency" />
+                  <option value="Finance.AccountName" />
+                  <option value="Finance.AccountNumber" />
+                  <option value="Finance.Bic" />
+                  <option value="Finance.CreditCard" />
+                  <option value="Finance.Iban" />
+                  <option value="Finance.BitcoinAddress" />
+
+                  <option value="Internet.Email" />
+                  <option value="Internet.Username" />
+                  <option value="Internet.Url" />
+                  <option value="Internet.Ip" />
+                  <option value="Internet.Ipv6" />
+                  <option value="Internet.Mac" />
+                  <option value="Internet.UserAgent" />
+                  <option value="Internet.Password" />
+                  <option value="Internet.Domain" />
+                  <option value="Internet.Avatar" />
+
+                  <option value="Image.Url" />
+
+                  <option value="Name.FullName" />
+                  <option value="Name.FirstName" />
+                  <option value="Name.LastName" />
+                  <option value="Name.Prefix" />
+                  <option value="Name.Suffix" />
+                  <option value="Name.JobTitle" />
+                  <option value="Name.JobDescriptor" />
+
+                  <option value="Address.City" />
+                  <option value="Address.Country" />
+                  <option value="Address.CountryCode" />
+                  <option value="Address.StreetAddress" />
+                  <option value="Address.ZipCode" />
+                  <option value="Address.State" />
+                  <option value="Address.Latitude" />
+                  <option value="Address.Longitude" />
+                  <option value="Address.BuildingNumber" />
+
+                  <option value="Phone.PhoneNumber" />
+
+                  <option value="Company.CompanyName" />
+                  <option value="Company.CatchPhrase" />
+                  <option value="Company.Bs" />
+                  <option value="Company.Suffix" />
+
+                  <option value="Lorem.Word" />
+                  <option value="Lorem.Sentence" />
+                  <option value="Lorem.Paragraph" />
+                  <option value="Lorem.Text" />
+                  <option value="Lorem.Slug" />
+
+                  <option value="Date.Past" />
+                  <option value="Date.Future" />
+                  <option value="Date.Recent" />
+                  <option value="Date.Month" />
+                  <option value="Date.Weekday" />
+
+                  <option value="System.FileName" />
+                  <option value="System.Mime" />
+                  <option value="System.FileType" />
+                  <option value="System.Semver" />
+                  <option value="Database.Column" />
+                  <option value="Database.Type" />
+                  <option value="Database.Engine" />
+
+                  <option value="Hacker.Phrase" />
+                  <option value="Hacker.Noun" />
+                  <option value="Hacker.Verb" />
+                  <option value="Hacker.IngVerb" />
+                  <option value="Hacker.Abbreviation" />
+
+                  <option value="Vehicle.Vin" />
+                  <option value="Vehicle.Manufacturer" />
+                  <option value="Vehicle.Model" />
+                  <option value="Vehicle.Type" />
+                  <option value="Vehicle.Fuel" />
+
+                  <option value="Random.Number" />
+                  <option value="Random.Bool" />
+                  <option value="Random.UUID" />
+                </datalist>
+                <span style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px', display: 'block' }}>
+                  Supports all Bogus .NET generators. Type any <code>Category.Method</code> (e.g., <code>Internet.Email</code>).
+                </span>
               </div>
             )}
             <div className="form-group" style={{ marginBottom: '12px' }}>
