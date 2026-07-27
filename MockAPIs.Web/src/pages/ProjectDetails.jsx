@@ -43,7 +43,7 @@ export function ProjectDetails() {
 
     try {
       const res = await api.put(`/api/Project/${projectId}/rename`, newName.trim());
-      setProject(res.data);
+      setProject((prev) => ({ ...prev, ...res.data }));
       setIsRenaming(false);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to rename project.');
