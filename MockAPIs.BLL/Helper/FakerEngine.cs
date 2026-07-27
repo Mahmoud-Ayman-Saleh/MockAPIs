@@ -172,9 +172,38 @@ namespace MockAPIs.BLL.Helpers
                 "random.bool"               => _faker.Random.Bool(),
                 "random.uuid"               => Guid.NewGuid().ToString(),
 
-                // unrecognized hint — return null so caller falls back to DataType
-                _                           => null
+                _                           => TryResolveDynamicHint(hint)
             };
+        }
+
+        // Dynamic Reflection engine — makes EVERY SINGLE BOGUS dataset and method available!
+        private static object? TryResolveDynamicHint(string hint)
+        {
+            try
+            {
+                var parts = hint.Trim().Split('.');
+                if (parts.Length != 2) return null;
+
+                var datasetProp = _faker.GetType().GetProperty(parts[0], System.Reflection.BindingFlags.IgnoreCase | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+                if (datasetProp == null) return null;
+
+                var datasetObj = datasetProp.GetValue(_faker);
+                if (datasetObj == null) return null;
+
+                var method = datasetObj.GetType().GetMethod(parts[1], System.Reflection.BindingFlags.IgnoreCase | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance, null, Type.EmptyTypes, null);
+                if (method != null)
+                {
+                    var result = method.Invoke(datasetObj, null);
+                    if (result is DateTime dt) return dt.ToString("yyyy-MM-ddTHH:mm:ssZ");
+                    return result;
+                }
+            }
+            catch
+            {
+                // ignored — returns null to fall back to default DataType generator
+            }
+
+            return null;
         }
     }
 }
