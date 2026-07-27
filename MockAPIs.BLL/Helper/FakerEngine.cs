@@ -73,18 +73,30 @@ namespace MockAPIs.BLL.Helpers
                 "commerce.productadjective" => _faker.Commerce.ProductAdjective(),
                 "commerce.productmaterial"  => _faker.Commerce.ProductMaterial(),
                 "commerce.categories"       => _faker.Commerce.Categories(1)[0],
+                "commerce.price"            => Math.Round(_faker.Random.Decimal(10, 1000), 2),
+                "commerce.color"            => _faker.Commerce.Color(),
+                "commerce.isbn"             => _faker.Commerce.Ean13(),
 
                 // finance
                 "finance.amount"            => Math.Round(_faker.Finance.Amount(1, 1000), 2),
                 "finance.currency"          => _faker.Finance.Currency().Code,
                 "finance.accountname"       => _faker.Finance.AccountName(),
+                "finance.accountnumber"     => _faker.Finance.Account(),
+                "finance.bic"               => _faker.Finance.Bic(),
+                "finance.creditcard"        => _faker.Finance.CreditCardNumber(),
+                "finance.iban"              => _faker.Finance.Iban(),
 
                 // internet
                 "internet.email"            => _faker.Internet.Email(),
                 "internet.username"         => _faker.Internet.UserName(),
                 "internet.url"              => _faker.Internet.Url(),
                 "internet.ip"               => _faker.Internet.Ip(),
+                "internet.ipv6"             => _faker.Internet.Ipv6(),
+                "internet.mac"              => _faker.Internet.Mac(),
                 "internet.useragent"        => _faker.Internet.UserAgent(),
+                "internet.password"         => _faker.Internet.Password(),
+                "internet.domain"           => _faker.Internet.DomainName(),
+                "internet.avatar"           => _faker.Internet.Avatar(),
 
                 // image
                 "image.url"                 => _faker.Image.LoremFlickrUrl(),
@@ -94,13 +106,20 @@ namespace MockAPIs.BLL.Helpers
                 "name.firstname"            => _faker.Name.FirstName(),
                 "name.lastname"             => _faker.Name.LastName(),
                 "name.prefix"               => _faker.Name.Prefix(),
+                "name.suffix"               => _faker.Name.Suffix(),
+                "name.jobtitle"             => _faker.Name.JobTitle(),
+                "name.jobdescriptor"       => _faker.Name.JobDescriptor(),
 
                 // address
                 "address.city"              => _faker.Address.City(),
                 "address.country"           => _faker.Address.Country(),
+                "address.countrycode"       => _faker.Address.CountryCode(),
                 "address.streetaddress"     => _faker.Address.StreetAddress(),
                 "address.zipcode"           => _faker.Address.ZipCode(),
                 "address.state"             => _faker.Address.State(),
+                "address.latitude"          => _faker.Address.Latitude(),
+                "address.longitude"         => _faker.Address.Longitude(),
+                "address.buildingnumber"    => _faker.Address.BuildingNumber(),
 
                 // phone
                 "phone.phonenumber"         => _faker.Phone.PhoneNumber(),
@@ -109,16 +128,44 @@ namespace MockAPIs.BLL.Helpers
                 "company.companyname"       => _faker.Company.CompanyName(),
                 "company.catchphrase"       => _faker.Company.CatchPhrase(),
                 "company.bs"                => _faker.Company.Bs(),
+                "company.suffix"            => _faker.Company.CompanySuffix(),
 
                 // lorem
                 "lorem.word"                => _faker.Lorem.Word(),
                 "lorem.sentence"            => _faker.Lorem.Sentence(),
                 "lorem.paragraph"           => _faker.Lorem.Paragraph(),
+                "lorem.text"                => _faker.Lorem.Text(),
+                "lorem.slug"                => _faker.Lorem.Slug(),
 
                 // date
                 "date.past"                 => _faker.Date.Past().ToString("yyyy-MM-ddTHH:mm:ssZ"),
                 "date.future"               => _faker.Date.Future().ToString("yyyy-MM-ddTHH:mm:ssZ"),
                 "date.recent"               => _faker.Date.Recent().ToString("yyyy-MM-ddTHH:mm:ssZ"),
+                "date.month"                => _faker.Date.Month(),
+                "date.weekday"              => _faker.Date.Weekday(),
+
+                // system & database
+                "system.filename"           => _faker.System.FileName(),
+                "system.mime"               => _faker.System.MimeType(),
+                "system.filetype"           => _faker.System.FileType(),
+                "system.semver"             => _faker.System.Semver(),
+                "database.column"           => _faker.Database.Column(),
+                "database.type"             => _faker.Database.Type(),
+                "database.engine"           => _faker.Database.Engine(),
+
+                // hacker
+                "hacker.phrase"             => _faker.Hacker.Phrase(),
+                "hacker.noun"               => _faker.Hacker.Noun(),
+                "hacker.verb"               => _faker.Hacker.Verb(),
+                "hacker.ingverb"            => _faker.Hacker.IngVerb(),
+                "hacker.abbreviation"       => _faker.Hacker.Abbreviation(),
+
+                // vehicle
+                "vehicle.vin"               => _faker.Vehicle.Vin(),
+                "vehicle.manufacturer"      => _faker.Vehicle.Manufacturer(),
+                "vehicle.model"             => _faker.Vehicle.Model(),
+                "vehicle.type"              => _faker.Vehicle.Type(),
+                "vehicle.fuel"              => _faker.Vehicle.Fuel(),
 
                 // random
                 "random.number"             => _faker.Random.Int(1, 1000),
