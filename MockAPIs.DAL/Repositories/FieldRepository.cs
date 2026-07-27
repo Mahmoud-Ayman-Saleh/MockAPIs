@@ -22,9 +22,9 @@ namespace MockAPIs.DAL.Repositories
             return await context.Fields.Where(f => f.ResourceId == resourceId).ToListAsync();
         }
 
-        public Task<bool> IsFieldOwnedByUser(Guid fieldId, Guid userId)
+        public async Task<bool> IsFieldOwnedByUser(Guid fieldId, Guid userId)
         {
-            throw new NotImplementedException();
+            return await context.Fields.AnyAsync(f => f.Id == fieldId && f.Resource.Project.UserId == userId);
         }
 
         public async Task<bool> IsResourceOwnedByUser(Guid resourceId, Guid userId)
