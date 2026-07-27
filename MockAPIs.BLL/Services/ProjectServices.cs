@@ -32,7 +32,7 @@ namespace MockAPIs.BLL.Services
                 Name = name,
                 Slug = finalSlug,
                 Token = token,
-                BaseUrl = $"https://mockapis.io/{token}/api/v1",
+                BaseUrl = $"http://localhost:5167/{token}/api/v1",
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true
             };
