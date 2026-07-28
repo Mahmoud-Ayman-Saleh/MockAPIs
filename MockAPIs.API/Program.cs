@@ -115,9 +115,12 @@ if (!app.Environment.IsDevelopment())
     app.UseHttpsRedirection();
 }
 
-// ─── Seed Roles ───────────────────────────────────────────────
+// ─── Apply Migrations & Seed Roles ────────────────────────────
 using (var scope = app.Services.CreateScope())
 {
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    await dbContext.Database.MigrateAsync();
+
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
     string[] roles = ["Admin", "User"];
     foreach (var role in roles)
