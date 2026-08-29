@@ -1,0 +1,11 @@
+[phases.install]
+cmds = ["mkdir -p /root/.nuget/packages"]
+
+[phases.build]
+cmds = [
+  "dotnet restore MockAPIs.sln",
+  "dotnet publish MockAPIs.API/MockAPIs.API.csproj --no-restore -c Release -o out"
+]
+
+[start]
+cmd = "ASPNETCORE_URLS=http://0.0.0.0:${PORT:-3000} dotnet out/MockAPIs.API.dll"
