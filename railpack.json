@@ -1,0 +1,20 @@
+{
+  "$schema": "https://schema.railpack.com",
+  "steps": {
+    "install": {
+      "commands": [
+        "mkdir -p /root/.nuget/packages"
+      ]
+    },
+    "build": {
+      "commands": [
+        "rm -f /app/*.csproj 2>/dev/null || true",
+        "dotnet restore MockAPIs.sln",
+        "dotnet publish MockAPIs.API/MockAPIs.API.csproj --no-restore -c Release -o out"
+      ]
+    }
+  },
+  "deploy": {
+    "startCommand": "ASPNETCORE_URLS=http://0.0.0.0:${PORT:-3000} dotnet out/MockAPIs.API.dll"
+  }
+}
